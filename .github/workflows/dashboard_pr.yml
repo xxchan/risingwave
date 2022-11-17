@@ -28,6 +28,7 @@ jobs:
           if ! git diff --quiet; then
             echo "::error::Generated proto files are not up to date."
             git fetch origin $GITHUB_BASE_REF
+            git merge-base origin/$GITHUB_BASE_REF HEAD
             FORK_POINT=$(git merge-base origin/$GITHUB_BASE_REF HEAD)
             echo "Fork point: $FORK_POINT"
             if ! git diff --quiet $FORK_POINT..origin/$GITHUB_BASE_REF -- proto; then
