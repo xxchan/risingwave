@@ -25,8 +25,9 @@ jobs:
           npm install
           npm run gen-proto
           if ! git diff --quiet; then
-            FORK_POINT=$(git merge-base $GITHUB_BASE_REF HEAD)
-            if ! git diff --quiet $FORK_POINT..$GITHUB_BASE_REF -- proto; then
+            BASE_COMMIT=$(git rev-parse $GITHUB_BASE_REF)
+            FORK_POINT=$(git merge-base $BASE_COMMIT HEAD)
+            if ! git diff --quiet $FORK_POINT..$BASE_COMMIT -- proto; then
               echo "Generated proto files are not up to date with main branch."
               echo "Please update your branch first and then run 'npm run gen-proto' at dashboard/ and commit the changes."
               exit 1
