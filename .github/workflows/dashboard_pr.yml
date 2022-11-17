@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: git fetch origin $GITHUB_BASE_REF
+      - run: git fetch origin $GITHUB_BASE_REF $GITHUB_HEAD_REF
       - uses: actions/setup-node@v2
         with:
           node-version: "18"
@@ -28,16 +28,16 @@ jobs:
 
           if ! git diff --quiet; then
             echo "::error::Generated proto files are not up to date."
-            git merge-base origin/main HEAD
-            FORK_POINT=$(git merge-base origin/main HEAD)
+            git merge-base origin/$GITHUB_HEAD_REF origin/$GITHUB_BASE_REF
+            FORK_POINT=$(git merge-base origin/$GITHUB_HEAD_REF origin/$GITHUB_BASE_REF)
             echo "Fork point: $FORK_POINT"
-            if ! git diff --quiet $FORK_POINT..origin/main -- proto; then
+            if ! git diff --quiet $FORK_POINT..origin/$GITHUB_BASE_REF -- proto; then
               echo "::notice::Please update your branch first and then run 'npm run gen-proto' at dashboard/ and commit the changes."
               exit 2
+            else
+              echo "::notice::Please run 'npm run gen-proto' at dashboard/ and commit the changes."
+              exit 3
             fi
-            
-            echo "::notice::Please run 'npm run gen-proto' at dashboard/ and commit the changes."
-            exit 3
           fi
 
           npm run lint
