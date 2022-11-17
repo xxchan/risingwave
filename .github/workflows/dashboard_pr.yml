@@ -18,7 +18,7 @@ jobs:
           node-version: "18"
       - uses: arduino/setup-protoc@v1
         with:
-          version: '3.x'
+          version: "3.x"
       - name: build
         working-directory: ./dashboard
         run: |
@@ -26,6 +26,13 @@ jobs:
           npm install
           npm run gen-proto
           if ! git diff --quiet; then
+            FORK_POINT=$(git merge-base main HEAD)
+            if ! git diff --quiet $FORK_POINT..main -- proto; then
+              echo "Generated proto files are not up to date with main branch."
+              echo "Please update your branch first and then run 'npm run gen-proto' at dashboard/ and commit the changes."
+              exit 1
+            fi
+            
             echo "Generated proto files are not up to date. Please run 'npm run gen-proto' at dashboard/ and commit the changes."
             exit 1
           fi
