@@ -9,6 +9,7 @@ message Status {
     UNSPECIFIED = 0;
     OK = 1;
     UNKNOWN_WORKER = 2;
+    ABA = 3;
   }
   Code code = 1;
   string message = 2;

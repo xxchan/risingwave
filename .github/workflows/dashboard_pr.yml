@@ -22,6 +22,7 @@ jobs:
       - name: build
         working-directory: ./dashboard
         run: |
+          git log --oneline | head
           npm install
           npm run gen-proto
           if ! git diff --quiet; then
