@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: git fetch origin $GITHUB_BASE_REF
       - uses: actions/setup-node@v2
         with:
           node-version: "18"
@@ -27,7 +28,6 @@ jobs:
 
           if ! git diff --quiet; then
             echo "::error::Generated proto files are not up to date."
-            git fetch origin $GITHUB_BASE_REF
             git merge-base origin/$GITHUB_BASE_REF HEAD
             FORK_POINT=$(git merge-base origin/$GITHUB_BASE_REF HEAD)
             echo "Fork point: $FORK_POINT"
