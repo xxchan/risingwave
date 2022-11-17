@@ -24,8 +24,9 @@ jobs:
         run: |
           npm install
           npm run gen-proto
+
           if ! git diff --quiet; then
-            echo "Generated proto files are not up to date."
+            echo "::error Generated proto files are not up to date."
             git fetch origin $GITHUB_BASE_REF
             FORK_POINT=$(git merge-base origin/$GITHUB_BASE_REF HEAD)
             echo "Fork point: $FORK_POINT"
@@ -34,9 +35,10 @@ jobs:
               exit 1
             fi
             
-            echo "Please run 'npm run gen-proto' at dashboard/ and commit the changes."
+            echo "::notice Please run 'npm run gen-proto' at dashboard/ and commit the changes."
             exit 1
           fi
+
           npm run lint
           npm run build
           npm run build-static
