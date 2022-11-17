@@ -19,7 +19,7 @@ jobs:
           git rev-parse origin/$GITHUB_BASE_REF
           FORK_POINT=$(git merge-base origin/$GITHUB_HEAD_REF origin/$GITHUB_BASE_REF)
           echo "$FORK_POINT"
-          git diff --quiet $FORK_POINT..origin/$GITHUB_BASE_REF
+          git diff $FORK_POINT..origin/$GITHUB_BASE_REF
       - uses: actions/setup-node@v2
         with:
           node-version: "18"
