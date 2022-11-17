@@ -28,11 +28,11 @@ jobs:
 
           if ! git diff --quiet; then
             echo "::error::Generated proto files are not up to date."
-            git merge-base origin/$GITHUB_BASE_REF HEAD
-            FORK_POINT=$(git merge-base origin/$GITHUB_BASE_REF HEAD)
+            git merge-base origin/main HEAD
+            FORK_POINT=$(git merge-base origin/main HEAD)
             echo "Fork point: $FORK_POINT"
-            if ! git diff --quiet $FORK_POINT..origin/$GITHUB_BASE_REF -- proto; then
-              echo "Please update your branch first and then run 'npm run gen-proto' at dashboard/ and commit the changes."
+            if ! git diff --quiet $FORK_POINT..origin/main -- proto; then
+              echo "::notice::Please update your branch first and then run 'npm run gen-proto' at dashboard/ and commit the changes."
               exit 2
             fi
             
