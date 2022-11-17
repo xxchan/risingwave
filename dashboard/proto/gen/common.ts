@@ -64,6 +64,7 @@ export const Status_Code = {
   UNSPECIFIED: "UNSPECIFIED",
   OK: "OK",
   UNKNOWN_WORKER: "UNKNOWN_WORKER",
+  ABA: "ABA",
   UNRECOGNIZED: "UNRECOGNIZED",
 } as const;
 
@@ -80,6 +81,9 @@ export function status_CodeFromJSON(object: any): Status_Code {
     case 2:
     case "UNKNOWN_WORKER":
       return Status_Code.UNKNOWN_WORKER;
+    case 3:
+    case "ABA":
+      return Status_Code.ABA;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -95,6 +99,8 @@ export function status_CodeToJSON(object: Status_Code): string {
       return "OK";
     case Status_Code.UNKNOWN_WORKER:
       return "UNKNOWN_WORKER";
+    case Status_Code.ABA:
+      return "ABA";
     case Status_Code.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
